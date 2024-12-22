@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery/components/myCurrentLocation.dart';
 import 'package:flutter_food_delivery/components/myDescriptionBox.dart';
 import 'package:flutter_food_delivery/components/myDrawer.dart';
+import 'package:flutter_food_delivery/components/myFoodTile.dart';
 import 'package:flutter_food_delivery/components/mySliverAppBar.dart';
 import 'package:flutter_food_delivery/components/myTabBar.dart';
+import 'package:flutter_food_delivery/models/food.dart';
+import 'package:flutter_food_delivery/models/restaurant.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +24,8 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController =
+        TabController(length: FoodCategory.values.length, vsync: this);
   }
 
   @override
@@ -29,10 +34,39 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  // sort out and return a list of food items that belong to specific category
+  List<Food> _filterMenuByCategory(FoodCategory category, List<Food> fullMenu) {
+    return fullMenu.where((food) => food.category == category).toList();
+  }
+
+  // return list of foods in given category
+  List<Widget> getFoodInThisCategory(List<Food> fullMenu) {
+    return FoodCategory.values.map((category) {
+      // get category menu
+      List<Food> categoryMenu = _filterMenuByCategory(category, fullMenu);
+
+      return ListView.builder(
+        itemCount: categoryMenu.length,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemBuilder: (context, index) {
+          // get individual food
+          final food = categoryMenu[index];
+
+          // return food title UI
+          return FoodTile(
+            food: food,
+            onTap: () {},
+          );
+        },
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           MySliverAppBar(
@@ -54,22 +88,11 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ],
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) => Text("first tab items"),
-            ),
-            ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) => Text("second tab items"),
-            ),
-            ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) => Text("third tab items"),
-            ),
-          ],
+        body: Consumer<Restaurant>(
+          builder: (context, restaurant, child) => TabBarView(
+            controller: _tabController,
+            children: getFoodInThisCategory(restaurant.menu),
+          ),
         ),
       ),
     );

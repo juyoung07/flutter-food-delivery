@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery/auth/loginOrRegister.dart';
-import 'package:flutter_food_delivery/pages/loginPage.dart';
-import 'package:flutter_food_delivery/pages/registerPage.dart';
+import 'package:flutter_food_delivery/models/restaurant.dart';
 import 'package:flutter_food_delivery/themes/themeProvider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvider(),
-    child: const MainApp(),
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        // theme provider
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+
+        // restaurant provider
+        ChangeNotifierProvider(create: (context) => Restaurant()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
