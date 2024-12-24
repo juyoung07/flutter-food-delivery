@@ -7,6 +7,8 @@ import 'package:flutter_food_delivery/components/mySliverAppBar.dart';
 import 'package:flutter_food_delivery/components/myTabBar.dart';
 import 'package:flutter_food_delivery/models/food.dart';
 import 'package:flutter_food_delivery/models/restaurant.dart';
+import 'package:flutter_food_delivery/pages/foodPage.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -56,7 +58,12 @@ class _HomePageState extends State<HomePage>
           // return food title UI
           return FoodTile(
             food: food,
-            onTap: () {},
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FoodPage(food: food),
+              ),
+            ),
           );
         },
       );
