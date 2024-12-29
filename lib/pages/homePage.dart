@@ -8,7 +8,6 @@ import 'package:flutter_food_delivery/components/myTabBar.dart';
 import 'package:flutter_food_delivery/models/food.dart';
 import 'package:flutter_food_delivery/models/restaurant.dart';
 import 'package:flutter_food_delivery/pages/foodPage.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
