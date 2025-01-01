@@ -320,6 +320,7 @@ class Restaurant extends ChangeNotifier {
 
   // G E T T E R S
   List<Food> get menu => _menu;
+  List<CartItem> get cart => _cart;
 
   // O P E R A T I O N S
 
@@ -335,7 +336,7 @@ class Restaurant extends ChangeNotifier {
 
       // check if list of addons are the same
       bool isSameAddons =
-          ListEquality().equals(item.selectedAddons, selectedAddons);
+          const ListEquality().equals(item.selectedAddons, selectedAddons);
 
       return isSameFood && isSameAddons;
     });
@@ -383,7 +384,7 @@ class Restaurant extends ChangeNotifier {
   }
 
   // get total number of items in cart
-  int getCartItemCount() {
+  int getTotalItemCount() {
     int totalItemCount = 0;
 
     for (CartItem cartItem in _cart) {
