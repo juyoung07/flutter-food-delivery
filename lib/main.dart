@@ -1,10 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery/auth/loginOrRegister.dart';
 import 'package:flutter_food_delivery/models/restaurant.dart';
 import 'package:flutter_food_delivery/themes/themeProvider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
